@@ -1,0 +1,71 @@
+## Admin Panel Installation — r45 (2021 client)
+
+**You'll be given 3 files:**
+1. `BoothServer.lua` — full replacement booth/admin server
+2. `AdminPanelServer.lua` — admin panel server (image log + panel services)
+3. `AdminPanelClient.lua` — the admin panel UI (client)
+
+**All 3 are 2021-client compatible.** Do not "fix" the code.
+
+---
+
+### Step 1 — Replace the booth server
+
+1. Open the game in Roblox Studio (edit mode).
+2. In **Explorer**, go to **ServerScriptService**.
+3. Find the existing script named **`Server`** (the big booth/admin server script).
+4. Delete its contents, paste in the **entire contents of `BoothServer.lua`**.
+5. Keep the script's name as `Server`. Do **not** change its location.
+6. Save.
+
+This is the complete booth system with the image-log hook already built in — nothing else needs editing in that script.
+
+### Step 2 — Add the image log server
+
+1. In **ServerScriptService**, right-click → **Insert Object → Script**.
+2. Name it exactly **`AdminPanelServer`**.
+3. Delete the default code, paste the **entire contents of `AdminPanelServer.lua`**.
+4. Save.
+
+This creates the `ReplicatedStorage.AdminPanel` services (image log + panel features) automatically when the server runs.
+
+### Step 3 — Add the admin panel client
+
+1. In **Explorer**, go to **StarterGui**.
+2. Right-click → **Insert Object → LocalScript**.
+3. Name it exactly **`AdminPanelClient`**.
+4. Delete the default code, paste the **entire contents of `AdminPanelClient.lua`**.
+5. Save.
+
+This builds the whole glass panel at runtime (no GUI objects to drag in — the script creates them).
+
+### Step 4 — Test
+
+1. Press **Play**.
+2. Check **Output** for: `[AdminPanel] server ready — image logging active.`
+3. Log in as an admin (any of: thugshaker `49603`, qzc `78857`, ywinfe `181869`, or a whitelisted staff member).
+4. Click the **◈ ADMIN** button (top-right).
+5. The camera should smoothly swing to face your character, and the glass panel fades in.
+6. Open the **IMAGE LOGS** tab — it should show every image that has been uploaded to booths (thumbnail, asset id, uploader, booth, time), searchable by username, updating live as new uploads happen.
+
+---
+
+### Notes for the dev
+- **Do not rename** the scripts or move them to different containers — the paths matter (`ServerScriptService.Server`, `ServerScriptService.AdminPanelServer`, `StarterGui.AdminPanelClient`).
+- The image log is **permanent** (DataStore). It survives restarts.
+- Only **admins** (owners/devs/whitelisted staff) can open the panel or read the log.
+- The panel reuses the game's existing admin plumbing — no other scripts need touching.
+
+### Mobile
+- The panel scales itself to fit any screen (phone/tablet/PC) and all
+  buttons work with touch — nothing extra to set up.
+
+### Quick rank shortcut (staff panel)
+- On the PLAYERS tab, tap any online player: it selects them as the
+  command target and shows a small dropdown under their name.
+- Pick a rank from the dropdown (Mod / Admin / Remove Staff — Owner and
+  Developer are hard-coded in the script and can't be granted in-game,
+  matching the booth server's rules). The change applies instantly and
+  is saved to the staff whitelist.
+- What ranks you can hand out depends on your own rank (Owners can grant
+  Admin/Mod, Admins can grant Mod, Mods can only remove).
